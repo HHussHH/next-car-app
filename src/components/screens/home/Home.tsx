@@ -1,13 +1,12 @@
-import { Inter } from "next/font/google";
-import Image from "next/image";
 import { FC } from "react";
-import styles from "./Home.module.css";
 import Layout from "@/components/layout/Layout";
 
-const inter = Inter({ subsets: ["latin"] });
-
 const Home: FC = () => {
-  return <Layout>Home</Layout>;
+  return (
+    <Layout title="Home" description="we like to sale cars">
+      <h1>Hello nextJs</h1>
+    </Layout>
+  );
 };
 
 export default Home;
