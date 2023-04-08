@@ -1,6 +1,6 @@
 import { ICar } from "@/interfaces/car.interface";
 import axios from "axios";
-const API_BASE_URL = "http://localhost:4200";
+const API_BASE_URL = process.env.API_BASE_URL;
 
 axios.defaults.baseURL = API_BASE_URL;
 export const CarService = {

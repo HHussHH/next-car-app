@@ -1,16 +1,35 @@
-import { NextPage } from "next";
-import { useRouter } from "next/router";
+import CarDetail from "@/components/screens/car-detail/CarDetail";
 
-const CarPage: NextPage = ({}) => {
-  const { push, replace } = useRouter();
+import { ICarDataSingle } from "@/interfaces/car.interface";
+import { CarService } from "@/services/car.service";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { ParsedUrlQuery } from "querystring";
 
-  console.log(push, replace);
-  return (
-    <div>
-      <button onClick={() => push("/")}>Go home</button>
-      <button onClick={() => replace("/")}>Go home</button>
-    </div>
-  );
+const CarDetailPage: NextPage<ICarDataSingle> = ({ car }) => {
+  return <CarDetail car={car} />;
+};
+interface Params extends ParsedUrlQuery {
+  id: string;
+}
+export const getStaticPaths: GetStaticPaths = async () => {
+  const cars = await CarService.getAll();
+  return {
+    paths: cars.map((car) => ({
+      params: {
+        id: car.id.toString(),
+      },
+    })),
+    fallback: "blocking",
+  };
 };
 
-export default CarPage;
+export const getStaticProps: GetStaticProps<ICarDataSingle> = async ({
+  params,
+}) => {
+  const car = await CarService.getById(String(params?.id));
+  return {
+    props: { car },
+    revalidate: 60,
+  };
+};
+export default CarDetailPage;
